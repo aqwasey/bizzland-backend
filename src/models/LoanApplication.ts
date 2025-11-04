@@ -34,7 +34,7 @@ const LoanApplicationSchema = new mongoose.Schema(
     business_postal_code: { type: String },
     business_province: { type: String },
     id_copy: { type: String },
-    bank_statement: { type: String },
+    bank_statement: [{ type: String }],
     cicp_document: { type: String },
     approval_date: { type: Date, default: null }, 
     loan_status: {

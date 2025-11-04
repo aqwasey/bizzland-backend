@@ -22,10 +22,10 @@ app.use("/api/v1", adminBlogRouter)
 async function startApp() {
 
     try {
-        console.log("Connecting to DB...")
+        console.log("Service: Connecting to DB...")
         await mongoose.connect(process.env.MONGO_URI!)
-        console.log("Connected to DB successfully")
-        app.listen(PORT, () => console.log(`Server listening on port ${PORT || 3001}...`))
+        console.log("Bizzland Service connected to DB successfully")
+        app.listen(PORT, () => console.log(`Bizzland Service listening on port ${PORT || 3001}...`))
     } catch (error) {
         console.log("Error connecting to database", error)
     }

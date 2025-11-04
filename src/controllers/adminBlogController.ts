@@ -5,7 +5,6 @@ import BlogPost from "../models/adminBlog";
 export const createBlogPost = async (req: Request, res: Response): Promise<void> => {
   try {
     const { title, slug, content, featured_image, category } = req.body;
-
     const newPost = new BlogPost({
       title,
       content,
@@ -15,7 +14,7 @@ export const createBlogPost = async (req: Request, res: Response): Promise<void>
     });
 
     await newPost.save();
-    res.status(201).json({messsage: "Blog post created successfully"});
+    res.status(201).json({ message: "Blog post created successfully" });
   } catch (err: any) {
     res.status(400).json({ error: err.message });
   }
@@ -91,7 +90,6 @@ export const deleteBlogPost = async (req: Request, res: Response): Promise<void>
 export const getBlogPostBySlug = async (req: Request, res: Response): Promise<void> => {
   try {
     const { slug } = req.params;
-
     const post = await BlogPost.findOne({ slug: slug }).select("-_id").populate("category", "name");
 
     if (!post) {

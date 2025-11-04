@@ -27,23 +27,24 @@ export const adminLogin = async (req: Request, res: Response): Promise<void> => 
       { userId: user?._id },
       process.env.JWT_SECRET as string,
       {
-        expiresIn: "250d",
+        expiresIn: "1d",
       }
     );
+
+    console.log("Generated Token:", token);
 
     // Returned logged in user to client
     res.status(OK).json({
       message: "Login successful",
       userDetails: {
-        token,
+        token, 
         userId: user?._id,
       },
     });
-  } catch (error) {
+  } catch (error: unknown) {
     console.error("Error logging in user:", error);
     res
       .status(INTERNAL_SERVER_ERROR)
-      .json({ message: "Failed to log in user" });
+      .json({ message: "Failed to log in user", error: (error as Error).message });
   }
 };
-

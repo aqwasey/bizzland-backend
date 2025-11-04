@@ -19,7 +19,8 @@ export const SendEmail = async (param: IEmailParams) => {
 		emailPool.to = [{ "email": param.email, "name": param.name }];
 		emailPool.templateId = param.template_id || 1;
 		emailPool.params = {
-			"firstname": param.name, "loan_id": param.loan_id,
+			"firstname": param.name,
+			"loan_id": param.loan_id,
 			"current_date": param.current_date,
 		};
 

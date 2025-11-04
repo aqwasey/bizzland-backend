@@ -18,14 +18,16 @@ export const createItem = async (req: Request, res: Response) => {
 
     if (applicationCount < 100) {
       paddedCount = String(applicationCount + 1).padStart(3, "0");
+
     } else if (applicationCount < 1000) {
       paddedCount = String(applicationCount + 1).padStart(2, "0");
+
     } else {
       paddedCount = String(applicationCount + 1); // No padding needed
+
     }
 
     let referenceId = `BZL${lastTwoDigits}${paddedCount}`;
-
     const LOAN_ID = referenceId;
     const loanApplication = new LoanApplication({ ...req.body, referenceId, });
 
@@ -41,16 +43,21 @@ export const createItem = async (req: Request, res: Response) => {
 
     // Send transactional email
     const messageParams: IEmailParams = {
-      email: email, template_id: 1, name: FIRSTNAME, loan_id: LOAN_ID,
+      email: email, template_id: 1,
+      name: FIRSTNAME, loan_id: LOAN_ID,
       current_date: new Date().toDateString()
     }
+
     // send out the email
     await SendEmail(messageParams);
     return;
 
   } catch (error) {
     res.status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ message: "Error creating loan application.", info: error });
+      .json({
+        message: "Error creating loan application.",
+        info: error
+      });
     return;
   }
 };
@@ -72,7 +79,7 @@ export const getAll = async (req: Request, res: Response) => {
 export const getByEmailNId = async (req: Request, res: Response) => {
   const { id, email } = req.params;
 
-  if(!id || !email) {
+  if (!id || !email) {
     res.status(StatusCodes.BAD_REQUEST).json({
       message: "ID and email are required"
     });
@@ -83,8 +90,9 @@ export const getByEmailNId = async (req: Request, res: Response) => {
     const loanApplication = await LoanApplication.findOne({ referenceId: id, email: email });
     if (!loanApplication) {
       res
-        .status(StatusCodes.NOT_FOUND).json({ 
-          message: "Loan application not found, application reference or email is invalid or does not exist" });
+        .status(StatusCodes.NOT_FOUND).json({
+          message: "Loan application not found, application reference or email is invalid or does not exist"
+        });
       return;
     }
     res.status(StatusCodes.OK).json(loanApplication);
@@ -93,7 +101,7 @@ export const getByEmailNId = async (req: Request, res: Response) => {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ message: "Error fetching loan application.", info: error });
-    return; 
+    return;
   }
 };
 
@@ -130,8 +138,8 @@ export const updateItem = async (req: Request, res: Response) => {
     });
 
     await loanApplication.save();
-    res.status(StatusCodes.OK).json({ 
-      message: "Loan application edited successfully" 
+    res.status(StatusCodes.OK).json({
+      message: "Loan application edited successfully"
     });
 
     // Send transactional email
@@ -159,7 +167,7 @@ export const getByRefID = async (
 ) => {
   try {
     const { referenceId } = req.params;
-  
+
     // Ensure the reference ID is provided
     if (!referenceId) {
       res
@@ -185,19 +193,20 @@ export const getByRefID = async (
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ 
-        message: "Error retrieving loan application.", 
-        info: error });
+      .json({
+        message: "Error retrieving loan application.",
+        info: error
+      });
     return;
   }
 };
 
 
 //Get loan by reference ID
-export const getById = async ( req: Request, res: Response ) => {
+export const getById = async (req: Request, res: Response) => {
   try {
     const { Id } = req.params;
-  
+
     // Ensure the reference ID is provided
     if (!Id) {
       res
@@ -222,9 +231,10 @@ export const getById = async ( req: Request, res: Response ) => {
   } catch (error) {
     res
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
-      .json({ 
-        message: "Error retrieving loan application by reference.", 
-        info: error });
+      .json({
+        message: "Error retrieving loan application by reference.",
+        info: error
+      });
     return;
   }
 };
